@@ -8,12 +8,14 @@
 
 /* TODO:
     - add proper PS1
-    - add "command not found"
     - add colors
     - add pipes
+    - add autocompletion
 */
 
-int main(void) {
+int main(int argc, char **argv) {
+    const char *progname = argv[0];
+
     char buffer[BUFFER_SIZE];
 
     while (1) {
@@ -34,9 +36,13 @@ int main(void) {
         }
         args[i] = NULL;
 
+        const char *cmd = args[0];
+
         pid_t pid = fork();
         if (pid == 0) {
-            execvp(args[0], args);
+            if (execvp(cmd, args) == -1) {
+                fprintf(stderr, "-%s: %s: not found\n", progname, cmd);
+            }
             return 0;
         } else {
             wait(NULL);
