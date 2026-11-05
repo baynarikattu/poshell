@@ -15,8 +15,11 @@
 
 int main(void) {
     char buffer[BUFFER_SIZE];
+
     while (1) {
         printf("$ ");
+        fflush(stdout);
+
         if (!fgets(buffer, BUFFER_SIZE, stdin)) {
             printf("\n");
             break;
